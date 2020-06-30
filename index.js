@@ -29,11 +29,11 @@ app.post('/people', (req, res) => {
 })
 
 app.listen(8081, async () => {
-    console.log("Example app listening at 8081")
+    console.log('Example app listening at 8081');
 
     await mongoose.connect('mongodb://localhost/stats', { useNewUrlParser: true, useUnifiedTopology: true });
 
-    console.log("connected to db")
+    console.log('connected to db');
 })
 
 // REST principles
