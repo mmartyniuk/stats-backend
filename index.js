@@ -1,6 +1,12 @@
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const app = express();
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+};
 
 const schema = new mongoose.Schema({ 
     name: String,
@@ -18,23 +24,29 @@ const Person = mongoose.model(
     schema
 );
 
-app.get('/people', async (req, res) => {
-    const result = await Person.find();
+app.use(bodyParser.json());
+
+app.get('/people', cors(corsOptions), async (req, res) => {
+    const query = req.query || {};
+    const result = await Person.find(query);
 
     res.json(result);
-})
+});
 
-app.post('/people', (req, res) => {
-    res.send('Hello World');
-})
+app.post('/people', cors(corsOptions), async (req, res) => {
+    await Person.create(req.body);
+
+    res.send('ok');
+});
 
 app.listen(8081, async () => {
+
     console.log('Example app listening at 8081');
 
     await mongoose.connect('mongodb://localhost/stats', { useNewUrlParser: true, useUnifiedTopology: true });
 
     console.log('connected to db');
-})
+});
 
 // REST principles
 
