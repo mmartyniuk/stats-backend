@@ -25,17 +25,17 @@ const Person = mongoose.model(
 );
 
 app.use(bodyParser.json());
+app.use(cors());
 
-app.get('/people', cors(corsOptions), async (req, res) => {
+app.get('/people', async (req, res) => {
     const query = req.query || {};
     const result = await Person.find(query);
 
     res.json(result);
 });
 
-app.post('/people', cors(corsOptions), async (req, res) => {
+app.post('/people', async (req, res) => {
     await Person.create(req.body);
-
     res.send('ok');
 });
 
